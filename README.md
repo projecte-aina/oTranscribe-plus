@@ -10,6 +10,25 @@
 
 ... and more!
 
+Despite the advances in machine learning applications, specifically Automatic Speech Recognition (ASR), the language work based within the audiovisual sector such as transcription, translation and subtitling still relies on manual labor done by experts. During the last decade, the inclusion of the new technologies only contributed to the Computer Assisted Transcription technologies, through the appearance of new startups which combine ASR and related technologies (speaker diarization, punctuation and capitalization recovery etc.) with an online editor. 
+
+However, there is a barrier of entry to the adoption of these tools, mostly due to their cost reflected on the client, which are priced based on the length of audio to be processed/transcribed. We aim to present a low-cost alternative to these platforms, both for the final user and the provider; taking advantage of the latest developments in the speech technologies, namely the use of edge (client-side) computing and open ASR models which are small and precise.
+
+With this platform/tool, language workers can upload a file to the web application and receive a basic transcription. Since ASR decoding is done on client-side, the provider can serve multiple users without the concern on costs per user computationally; since the server side processes will be limited.
+
+oTranscribe+ is an **[oTranscribe](http://oTranscribe.com/)** fork that adds [Vosk-Browser](https://github.com/ccoreilly/vosk-browser) functionality.
+
+## Extended version
+
+### Requirements
+
+This project requires Node version 12. We recommend to use the [Node Version Manager](https://github.com/nvm-sh/nvm) tool, as well as the [Yarn](https://yarnpkg.com/) package manager. With them you can locally use that Node version 12 and install requirements:
+
+```
+nvm use 12
+yarn install
+```
+
 ### Download a copy
 
 Although a [web version](http://otranscribe.com/) is available, you can install oTranscribe anywhere by following these steps:
@@ -29,6 +48,12 @@ The `src` folder in this repository only includes the "raw" JavaScript and CSS. 
 - Run `make build_prod` to compile the `dist` folder
 
 For a sourcemap and 'watch-for-changes', run `make build_dev`.
+
+### Usage and compilation (Extended version)
+
+Code lives in `src` folder. There you will find the raw JavaScript and CSS files. Before you start expanding them you need to be using Node version 12 and have requirements already installed. Then, for compiling the code, obtaining a sourcemap, and 'watch-for-changes', run `make build_dev`.
+
+`dist` folder will be filled with the end result of oTranscribe+ files and folders. You can emulate the access by a remote browser launching on that location the next Python command: `python3 -m http.server`. Having run this, you will be able to access with your browser to your local port 8000, where oTranscribe+ should be served.
 
 ### OTR file format
 

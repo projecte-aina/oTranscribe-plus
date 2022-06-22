@@ -9,6 +9,204 @@
             <div class="close-message-panel"><i class="fa fa-times"></i></div>
             <div class="message-content"></div>
     </div>
+
+
+    <script>
+        let model = null;
+        let recognizer = null;
+        let source = null;
+
+        function stop() {
+            console.log("stopping");
+            if (model !== null) {
+                model.terminate();
+                model = null;
+            }
+            if (recognizer !== null) {
+                recognizer.remove();
+                recognizer = null;
+            }
+            if (source !== null) {
+                source.disconnect();
+                source = null;
+            }
+        }
+
+        function onPartialResult(message) {
+            const partialContainer = document.getElementById('partial');
+            const partial = message.result.partial;
+            partialContainer.textContent = partial;
+        }
+
+        function onResult(message) {
+            const partialContainer = document.getElementById('partial');
+            const resultsContainer = document.getElementById('textbox');
+            const grayValues = "0123456789ABCDEF";
+            
+            const result = message.result;
+            if (result.text === "") {
+                return;
+            }
+            console.log("Result:", message);
+            result.result.forEach( (e) => {
+                var idx = (14 - Math.round(e.conf * 14)) + 2;
+                var chr = grayValues[idx];
+                const newSpan = document.createElement('span');
+                newSpan.textContent = e.word + " ";
+                newSpan.title = e.conf;
+                newSpan.style.cssText = `color: #${chr}${chr}${chr};`
+                resultsContainer.insertAdjacentElement("beforeend", newSpan);
+            });
+            partialContainer.textContent = "";
+        }
+
+        async function readFromMicro() {  
+            stop();
+
+            const partialContainer = document.getElementById('partial');         
+            const modelName = document.getElementById("model").value;
+            console.log("Loading ", modelName);
+
+            partialContainer.textContent = "Loading...";
+            
+            const channel = new MessageChannel();
+            model = await Vosk.createModel('models/' + modelName);
+            model.registerPort(channel.port1);
+
+            const sampleRate = 48000;
+            
+            recognizer = new model.KaldiRecognizer(sampleRate);
+            recognizer.setWords(true);
+            recognizer.on("result", onResult);
+            recognizer.on("partialresult", onPartialResult);
+
+            partialContainer.textContent = "Ready";
+            
+            const mediaStream = await navigator.mediaDevices.getUserMedia({
+                video: false,
+                audio: {
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                    channelCount: 1,
+                    sampleRate
+                },
+            });
+            
+            const audioContext = new AudioContext();
+            await audioContext.audioWorklet.addModule('recognizer-processor.js')
+            const recognizerProcessor = new AudioWorkletNode(audioContext, 'recognizer-processor', { channelCount: 1, numberOfInputs: 1, numberOfOutputs: 1 });
+            recognizerProcessor.port.postMessage({action: 'init', recognizerId: recognizer.id}, [ channel.port2 ])
+            recognizerProcessor.connect(audioContext.destination);
+            
+            source = audioContext.createMediaStreamSource(mediaStream);
+            source.connect(recognizerProcessor);
+        }
+
+        async function readFromFile(e) {
+            stop();
+
+            const file = e.target.files[0];
+            const partialContainer = document.getElementById('partial');
+            const audioRef = document.getElementById('audio-ref')
+            const modelName = document.getElementById("model").value;
+            console.log("Loading ", modelName);
+
+            partialContainer.textContent = "Loading...";
+            
+            const channel = new MessageChannel();
+            model = await Vosk.createModel('models/' + modelName);
+            model.registerPort(channel.port1);
+
+            const sampleRate = 48000;
+            recognizer = new model.KaldiRecognizer(sampleRate);
+            recognizer.setWords(true);
+            recognizer.on("result", onResult);
+            recognizer.on("partialresult", onPartialResult);
+
+
+            // const [audioSource, setAudioSource] = useState<MediaElementAudioSourceNode>();
+            
+            const fileUrl = URL.createObjectURL(file);
+            const audioPlayer = audioRef; //.current;
+            audioPlayer.src = fileUrl;
+
+            const audioContext = new AudioContext();
+
+            const recognizerNode = audioContext.createScriptProcessor(4096, 1, 1);
+            recognizerNode.onaudioprocess = (event) => {
+            try {
+                if (
+                audioPlayer.currentTime < audioPlayer.duration &&
+                !audioPlayer.paused
+                ) {
+                recognizer.acceptWaveform(event.inputBuffer);
+                }
+            } catch (error) {
+                console.error("acceptWaveform failed", error);
+            }
+            };
+
+            source = audioContext.createMediaElementSource(audioPlayer);
+
+            source.disconnect();
+            source.connect(recognizerNode);
+            // TODO: investigate why recognition quality worsens when recognizerNode is connected
+            // to destination
+            //
+            // Uncomment the next line for it to work in Chrome.
+            // recognizerNode.connect(_audioContext.destination);
+        }
+
+        function appendText() {
+            let textbox = document.querySelector('#textbox');
+            textbox.innerHTML = textbox.innerHTML + "<span>test</span>";
+        }
+    </script>
+
+
+    <div style="display: flex; justify-content:center; margin:auto; margin-bottom: 20px; width: 20%;">
+        <div style="display: inline;">
+        <select name="model" id="model" style="width: 100%;">
+            <option value="vosk-model-small-fa-0.4.tar.gz">Farsi</option>
+            <option value="vosk-model-small-es-0.3.tar.gz">Español</option>
+            <option value="vosk-model-small-fr-pguyot-0.3.tar.gz">French</option>
+            <option value="vosk-model-small-vn-0.3.tar.gz">Vietnamese</option>
+            <option value="vosk-model-small-pt-0.3.tar.gz">Portuguese</option>
+            <option value="vosk-model-small-en-us-0.15.tar.gz">English</option>
+            <option value="vosk-model-small-de-0.15.tar.gz">Deutsch</option>
+            <option value="vosk-model-small-it-0.4.tar.gz">Italiano</option>
+            <option value="vosk-model-small-cn-0.3.tar.gz">Chinese</option>
+            <option value="vosk-model-small-tr-0.3.tar.gz">Turkish</option>
+            <option value="vosk-model-small-ru-0.4.tar.gz">Russian</option>
+            <option value="vosk-model-small-ca-0.4.tar.gz" selected="true">Catalan</option>
+            <option value="vosk-model-small-en-in-0.4.tar.gz">Indian English</option>
+          </select>
+        </div>
+    </div>
+
+    <div style="display: block;margin: auto;width: 30%;">
+        <div style="display: flex;flex-direction: row;justify-content: space-around;">
+            <p style="text-align: center;">
+                <button class="alt-input-button" onclick="readFromMicro()">Write from micro</button>
+            </p>
+            <p style="text-align: center;">
+                <label for="inputTag" class="alt-input-button" style="height: 1.1rem;display: flex;justify-content: center;align-items: center;" onclick="document.getElementById('file-input').click();">
+                    Read from file thanks to Vosk
+                    <input id="file-input" type="file" accept="audio/*" style="display:none;">
+                    <audio id="audio-ref" autoplay></audio>
+                    <script>document.getElementById('file-input').addEventListener('change', readFromFile, false);</script>
+                </label>
+            </p>
+            <p style="text-align: center; ">
+                <button class="alt-input-button" style="width: 50px;" onclick="stop()">⏸️</button>
+            </p>
+        </div>  
+    </div>
+
+    <div style="display: block;">
+        <p id="partial" style="text-align: center; color: #4C6777;">
+        </p>
+    </div>
     
     <div id="textbox"  class="mousetrap" contenteditable="true">
         <p data-l10n-id="d-txt1">Enter your transcript here...</p>
@@ -46,8 +244,7 @@
             <i class="fa fa-share-square-o" id="icon-exp"></i><span class="label" data-l10n-id="export">Export</span>
             
         </button>
-                
-                
+                              
         
     </div>
     <div class="export-panel">
