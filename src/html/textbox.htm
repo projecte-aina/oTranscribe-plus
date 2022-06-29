@@ -187,16 +187,23 @@
     <div style="display: block;margin: auto;width: 30%;">
         <div style="display: flex;flex-direction: row;justify-content: space-around;">
             <p style="text-align: center; margin: 0 2rem;">
-                <button class="alt-input-button" onclick="readFromMicro()">Write from micro</button>
+                <button id="buttonReadFromMicro" class="alt-input-button" onclick="readFromMicro()">Write from micro</button>
             </p>
             <p style="text-align: center; margin: 0 2rem;">
-                <label for="inputTag" class="alt-input-button" style="height: 1.1rem;display: flex;justify-content: center;align-items: center;" onclick="document.getElementById('file-input').click();">
+                <label id="labelReadFromFile" for="inputTag" class="alt-input-button" style="height: 1.1rem;display: flex;justify-content: center;align-items: center;" onclick="document.getElementById('file-input').click();">
                     Read from file thanks to Vosk
                     <input id="file-input" type="file" accept="audio/*" style="display:none;">
                     <audio id="audio-ref" autoplay></audio>
                     <script>document.getElementById('file-input').addEventListener('change', readFromFile, false);</script>
                 </label>
             </p>
+            <script>
+                window.addEventListener('localized', function(event) {
+                    document.getElementById("labelReadFromFile").innerText = document.webL10n.get('readFromFile');
+                    document.getElementById("buttonReadFromMicro").innerText = document.webL10n.get('readFromMicro');
+                }); 
+                
+            </script>
         </div>  
     </div>
 
