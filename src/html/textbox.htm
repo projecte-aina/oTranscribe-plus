@@ -15,6 +15,7 @@
         let model = null;
         let recognizer = null;
         let source = null;
+        var currentFile = null;
 
         function stop() {
             console.log("stopping");
@@ -105,7 +106,7 @@
         async function readFromFile(e) {
             stop();
 
-            const file = e.target.files[0];
+            const file = currentFile; // e.target.files[0];
             const partialContainer = document.getElementById('partial');
             const audioRef = document.getElementById('audio-ref')
             const modelName = document.getElementById("model").value;
@@ -156,11 +157,6 @@
             // Uncomment the next line for it to work in Chrome.
             // recognizerNode.connect(_audioContext.destination);
         }
-
-        function appendText() {
-            let textbox = document.querySelector('#textbox');
-            textbox.innerHTML = textbox.innerHTML + "<span>test</span>";
-        }
     </script>
 
 
@@ -190,16 +186,12 @@
                 <button id="buttonReadFromMicro" class="alt-input-button" onclick="readFromMicro()">Write from micro</button>
             </p>
             <p style="text-align: center; margin: 0 2rem;">
-                <label id="labelReadFromFile" for="inputTag" class="alt-input-button" style="height: 1.1rem;display: flex;justify-content: center;align-items: center;" onclick="document.getElementById('file-input').click();">
-                    Read from file thanks to Vosk
-                    <input id="file-input" type="file" accept="audio/*" style="display:none;">
-                    <audio id="audio-ref" autoplay></audio>
-                    <script>document.getElementById('file-input').addEventListener('change', readFromFile, false);</script>
-                </label>
+                <audio id="audio-ref" autoplay></audio>
+                <button id="buttonReadFromFile" class="alt-input-button" onclick="readFromFile()">Write from micro</button>
             </p>
             <script>
                 window.addEventListener('localized', function(event) {
-                    document.getElementById("labelReadFromFile").innerText = document.webL10n.get('readFromFile');
+                    document.getElementById("buttonReadFromFile").innerText = document.webL10n.get('readFromFile');
                     document.getElementById("buttonReadFromMicro").innerText = document.webL10n.get('readFromMicro');
                 }); 
                 
