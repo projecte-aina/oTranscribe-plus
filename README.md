@@ -47,11 +47,9 @@ The `src` folder in this repository only includes the "raw" JavaScript and CSS. 
 - Run `npm install` to install dependencies
 - Run `make build_prod` to compile the `dist` folder
 
-For a sourcemap and 'watch-for-changes', run `make build_dev`.
-
 ### Usage and compilation (Extended version)
 
-Code lives in `src` folder. There you will find the raw JavaScript and CSS files. Before you start expanding them you need to be using Node version 12 and have requirements already installed. Then, for compiling the code, obtaining a sourcemap, and 'watch-for-changes', run `make build_dev`.
+Code lives in `src` folder. There you will find the raw JavaScript and CSS files. Before you start expanding them you need to be using Node version 12 and have requirements already installed. Then, for compiling the code, obtaining a sourcemap, and 'watch-for-changes' (it will be kept running for development and watch real-time changes), run `make build_dev`.
 
 `dist` folder will be filled with the end result of oTranscribe+ files and folders. You can emulate the access by a remote browser launching on that location the next Python command: `python3 -m http.server`. Having run this, you will be able to access with your browser to your local port 8000, where oTranscribe+ should be served.
 
