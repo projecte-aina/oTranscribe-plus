@@ -72,6 +72,18 @@ Then run a server at the root directory of this repository at `http://localhost:
 
     casperjs test tests/
 
+
+### Docker deployment
+
+Build docker image
+```bash
+make docker_build
+```
+
+Deploy using docker compose
+
+```bash docker compose up -d```
+
 ### Translations
 
 Translations have been provided by the following talented and generous volunteers:

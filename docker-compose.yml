@@ -1,0 +1,7 @@
+version: '3.9'
+services:
+   app:
+    image:  aina/otranscribe-plus:0.0.5
+    restart: unless-stopped
+    ports:
+      - '8000:80'

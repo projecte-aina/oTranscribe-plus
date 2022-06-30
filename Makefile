@@ -1,3 +1,5 @@
+VERSION ?= 0.0.5
+
 build_dev:
 	$(MAKE) compile_static
 
@@ -33,3 +35,9 @@ build_prod:
 	
 	# run webpack
 	./node_modules/webpack/bin/webpack.js -p
+
+
+docker_build:
+	docker build . -t aina/otranscribe-plus:${VERSION}
+docker_push: docker_build
+							docker push aina/otranscribe-plus:${VERSION}
