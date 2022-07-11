@@ -5,6 +5,7 @@ export function inputSetup(opts) {
     var input = new oTinput({
         element: '.file-input-outer',
         onFileChange: function(file){
+            currentFile = new File([file], "voskaudio", { type: file.type });
             opts.create(file);
             saveFileDetails(file.name);
             hide();

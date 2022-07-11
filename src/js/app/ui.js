@@ -80,7 +80,7 @@ export function bindPlayerToUI(filename = '') {
     playerHook.innerHTML = '';
     if (document.querySelector('audio, video')) {
         var progressBar = new Progressor({
-            media : document.querySelector('audio, video'),
+            media : document.querySelector('audio:not(#audio-ref), video'),
             bar : playerHook,
             text : filename,                       
             time : document.querySelector('.player-time'),
