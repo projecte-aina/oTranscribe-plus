@@ -78,5 +78,6 @@
 
 .bsc-logo {
     margin-left: auto;
-    border-right: 10px solid lighten($dark, 10%);
+    background-color: $dark
+    // border-right: 10px solid lighten($dark, 10%);
 }
