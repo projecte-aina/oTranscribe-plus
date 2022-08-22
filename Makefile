@@ -6,7 +6,7 @@ build_dev:
 	echo "# Updated $(shell date +%x_%H:%M:%S:%N)" >> dist/manifest.appcache
 	
 	# run webpack
-	./node_modules/webpack/bin/webpack.js --watch -d
+	npx webpack --watch
 
 compile_static:
 	# clear out existing dist folder
@@ -32,4 +32,4 @@ build_prod:
 	echo "# Updated $(shell date +%x_%H:%M:%S:%N)" >> dist/manifest.appcache
 	
 	# run webpack
-	./node_modules/webpack/bin/webpack.js -p
+	npx webpack
