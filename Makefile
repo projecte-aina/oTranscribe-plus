@@ -33,3 +33,6 @@ build_prod:
 	
 	# run webpack
 	npx webpack
+
+build_sitemap:
+	npx sscli -b https://${BASEURL} -r dist/ -f xml -o > dist/sitemap.xml

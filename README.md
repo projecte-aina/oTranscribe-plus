@@ -53,6 +53,13 @@ Code lives in `src` folder. There you will find the raw JavaScript and CSS files
 
 `dist` folder will be filled with the end result of oTranscribe+ files and folders. You can emulate the access by a remote browser launching on that location the next Python command: `python3 -m http.server`. Having run this, you will be able to access with your browser to your local port 8000, where oTranscribe+ should be served.
 
+### Sitemap generation
+
+For generating the `sitemap.xml` file it is used the [static-sitemap-cli tool](https://github.com/zerodevx/static-sitemap-cli). The call for doing that has been added to the `Makefile`, so you just need to execute `make build_sitemap` for obtaining the sitemap file inside the `dist` folder. However, this call have to prerequisites:
+ 
+* You need to execute `make build_sitemap` after the `make build_prod`. This is required as it uses those files located in the `dist` folder to generate the sitemap file.
+* You need to define an environment variable prior to the execution of `make build_sitemap` named `BASEURL`. This must have the value of the domain and path in which it is gonna be found the site. You can define it like `export BASEURL=test.com` or like `export BASEURL=test.com/path`.
+
 ### OTR file format
 
 oTranscribe has its own file format (.otr), which is just a JSON file with the following parameters:
