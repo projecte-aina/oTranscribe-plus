@@ -104,6 +104,12 @@
         }
 
         async function readFromFile(e) {
+            if (currentFile === null) {
+                const fileNotFoundText = document.webL10n.get('fileNotFound');
+                alert(fileNotFoundText);
+                return;
+            }
+
             stop();
 
             const file = currentFile; // e.target.files[0];
