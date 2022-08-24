@@ -62,7 +62,7 @@ module.exports = {
   },
   // Use the plugin to specify the resulting filename (and add needed behavior to the compiler)
   plugins: [
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({filename: "style.css"}),
     new CopyPlugin({
       patterns: [
         { from: './node_modules/webl10n/l10n.js' },
