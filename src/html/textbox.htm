@@ -16,9 +16,11 @@
         let recognizer = null;
         let source = null;
         var currentFile = null;
+        let lastTimestampedMin = 0;
 
         function stop() {
             console.log("stopping");
+            lastTimestampedMin = 0;
             if (model !== null) {
                 model.terminate();
                 model = null;
@@ -33,6 +35,19 @@
             }
         }
 
+        function autoTimestamp(second) {
+            let currentMinute = Math.floor(second / 60);
+            if ((currentMinute === 0) || (currentMinute === lastTimestampedMin)) {
+                return null;
+            }
+            lastTimestampedMin = currentMinute;
+            let time = {
+                formatted: window.formatMilliseconds(second),
+                raw: second
+            };
+            return window.createTimestampEl(time);
+        }
+
         function onPartialResult(message) {
             const partialContainer = document.getElementById('partial');
             const partial = message.result.partial;
@@ -43,6 +58,8 @@
             const partialContainer = document.getElementById('partial');
             const resultsContainer = document.getElementById('textbox');
             const grayValues = "0123456789ABCDEF";
+            const space = document.createTextNode("\u00A0");
+            let timestamp = null;
             
             const result = message.result;
             if (result.text === "") {
@@ -56,6 +73,16 @@
                 newSpan.textContent = e.word + " ";
                 newSpan.title = e.conf;
                 newSpan.style.cssText = `color: #${chr}${chr}${chr};`
+                newSpan.dataset.meta = JSON.stringify(e);
+
+                timestamp = autoTimestamp(e["start"]);
+                if (timestamp !== null) {
+                    resultsContainer.insertAdjacentElement("beforeend", timestamp);
+                    const spaceSpan = document.createElement('span');
+                    spaceSpan.textContent = " ";                    
+                    resultsContainer.insertAdjacentElement("beforeend", spaceSpan);
+                }
+
                 resultsContainer.insertAdjacentElement("beforeend", newSpan);
             });
             partialContainer.textContent = "";
@@ -66,7 +93,7 @@
 
             const partialContainer = document.getElementById('partial');         
             const modelName = document.getElementById("model").value;
-            console.log("Loading ", modelName);
+            console.log("Loading model: ", modelName);
 
             partialContainer.textContent = "Loading...";
             
@@ -104,6 +131,12 @@
         }
 
         async function readFromFile(e) {
+            if (currentFile === null) {
+                const fileNotFoundText = document.webL10n.get('fileNotFound');
+                alert(fileNotFoundText);
+                return;
+            }
+
             stop();
 
             const file = currentFile; // e.target.files[0];
@@ -112,7 +145,7 @@
             const modelName = document.getElementById("model").value;
             console.log("Loading ", modelName);
 
-            partialContainer.textContent = "Loading...";
+            partialContainer.textContent = document.webL10n.get('loadingModel');
             
             const channel = new MessageChannel();
             model = await Vosk.createModel('models/' + modelName);
