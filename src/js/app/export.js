@@ -1,7 +1,7 @@
 const $ = require('jquery');
 const Mustache = require('mustache');
 const toMarkdown = require('to-markdown');
-const template = require('raw-loader!../../html/export-panel.ms');
+import template from '../../html/export-panel.ms';
 import googleDriveSetup from './export-formats/google-drive';
 import { getPlayer } from './player/player';
 const sanitizeHtml = require('sanitize-html');
@@ -99,7 +99,6 @@ function generateButtons(filename) {
             format.href = convertToBase64(format.file);
         });
     }    
-  
     return Mustache.render(template, {
         downloads: downloadData
     });

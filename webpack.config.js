@@ -23,6 +23,15 @@ module.exports = {
         }
       },
       {
+        test: /\.ms$/i,
+        use: {
+          loader: 'raw-loader',
+          options: {
+            esModule: false,
+          }
+        }
+      },
+      {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
         use: {
