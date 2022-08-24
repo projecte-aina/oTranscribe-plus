@@ -44,21 +44,14 @@ Please note that, in Chrome, local copies oTranscribe may not run correctly due 
 The `src` folder in this repository only includes the "raw" JavaScript and CSS. To compile the production-ready files:
 
 - Install [Node.js and NPM](https://nodejs.org).
-- Run `npm install` to install dependencies
-- Run `make build_prod` to compile the `dist` folder
+- Run `npm install` to install dependencies.
+- Run `make build_prod BASEURL=test.com` to compile the `dist` folder. This also generates the `sitemap.xml` file setting the `BASEURL` value as the site root path. You can set it like `test.com` or like `test.com/path`.
 
 ### Usage and compilation (Extended version)
 
 Code lives in `src` folder. There you will find the raw JavaScript and CSS files. Before you start expanding them you need to be using Node version 12 and have requirements already installed. Then, for compiling the code, obtaining a sourcemap, and 'watch-for-changes' (it will be kept running for development and watch real-time changes), run `make build_dev`.
 
 `dist` folder will be filled with the end result of oTranscribe+ files and folders. You can emulate the access by a remote browser launching on that location the next Python command: `python3 -m http.server`. Having run this, you will be able to access with your browser to your local port 8000, where oTranscribe+ should be served.
-
-### Sitemap generation
-
-For generating the `sitemap.xml` file it is used the [static-sitemap-cli tool](https://github.com/zerodevx/static-sitemap-cli). The call for doing that has been added to the `Makefile`, so you just need to execute `make build_sitemap` for obtaining the sitemap file inside the `dist` folder. However, this call have to prerequisites:
- 
-* You need to execute `make build_sitemap` after the `make build_prod`. This is required as it uses those files located in the `dist` folder to generate the sitemap file.
-* You need to define an environment variable prior to the execution of `make build_sitemap` named `BASEURL`. This must have the value of the domain and path in which it is gonna be found the site. You can define it like `export BASEURL=test.com` or like `export BASEURL=test.com/path`.
 
 ### OTR file format
 
