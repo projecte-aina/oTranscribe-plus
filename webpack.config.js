@@ -72,7 +72,7 @@ module.exports = {
       patterns: [
         { from: './node_modules/webl10n/l10n.js' },
         { from: './node_modules/vosk-browser/dist/vosk.js' },
-        { from: './models' },
+        { from: './models', to: './models' },
         { from: './src/recognizer-processor.js' }
       ]
     }),
