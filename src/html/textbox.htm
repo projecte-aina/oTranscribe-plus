@@ -95,7 +95,7 @@
             const modelName = document.getElementById("model").value;
             console.log("Loading model: ", modelName);
 
-            partialContainer.textContent = "Loading...";
+            partialContainer.textContent = document.webL10n.get('loadingModel');
             
             const channel = new MessageChannel();
             model = await Vosk.createModel('models/' + modelName);
