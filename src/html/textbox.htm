@@ -164,31 +164,18 @@
             const audioPlayer = audioRef; //.current;
             audioPlayer.src = fileUrl;
 
-            const audioContext = new AudioContext();
+            const audio = new Audio(fileUrl);
+            const ctx = new AudioContext();
+            const stream_dest = ctx.createMediaStreamDestination();
+            const source = ctx.createMediaElementSource(audioPlayer);
+            
+            await ctx.audioWorklet.addModule('recognizer-processor.js')
+            const recognizerProcessor = new AudioWorkletNode(ctx, 'recognizer-processor', { channelCount: 1, numberOfInputs: 1, numberOfOutputs: 1 });
+            recognizerProcessor.port.postMessage({action: 'init', recognizerId: recognizer.id}, [ channel.port2 ])
+            recognizerProcessor.connect(ctx.destination);
 
-            const recognizerNode = audioContext.createScriptProcessor(4096, 1, 1);
-            recognizerNode.onaudioprocess = (event) => {
-            try {
-                if (
-                audioPlayer.currentTime < audioPlayer.duration &&
-                !audioPlayer.paused
-                ) {
-                recognizer.acceptWaveform(event.inputBuffer);
-                }
-            } catch (error) {
-                console.error("acceptWaveform failed", error);
-            }
-            };
+            source.connect(recognizerProcessor);
 
-            source = audioContext.createMediaElementSource(audioPlayer);
-
-            source.disconnect();
-            source.connect(recognizerNode);
-            // TODO: investigate why recognition quality worsens when recognizerNode is connected
-            // to destination
-            //
-            // Uncomment the next line for it to work in Chrome.
-            // recognizerNode.connect(_audioContext.destination);
         }
     </script>
 
