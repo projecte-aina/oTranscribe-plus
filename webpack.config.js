@@ -82,7 +82,10 @@ module.exports = {
         { from: './node_modules/webl10n/l10n.js' },
         { from: './node_modules/vosk-browser/dist/vosk.js' },
         { from: './models', to: './models' },
-        { from: './src/recognizer-processor.js' }
+        { from: './src/recognizer-processor.js' },
+        { from: './src/help.htm', to: './help/index.htm' },
+        { from: './src/opensource.htm', to: './opensource/index.htm' },
+        { from: './src/privacy.htm', to: './privacy/index.htm' }
       ]
     }),
     new HtmlWebpackPlugin({
