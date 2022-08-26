@@ -14,7 +14,10 @@
 <body>
     <script type="application/javascript" src="vosk.js"></script>
     <script type="text/javascript" src="l10n.js"></script>
+
+    <% if (!APPLICATION) { %>
     <script src="./jakecache.js" type="text/javascript" charset="utf-8"></script>
+    <% } %>
 
     <%= require('html-loader!./html/topbar.htm').default %>
 

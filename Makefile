@@ -38,3 +38,14 @@ build_prod:
     else
 	echo "${ORAN}BASEURL not defined, sitemap.xml file was not generated${NC}"
     endif
+
+build_app:
+	$(MAKE) compile_static
+	rm ./dist/jakecache.js ./dist/jakecache-sw.js
+
+	# manifest
+	cp src/manifest-dev.appcache dist/manifest.appcache
+	echo "# Updated $(shell date +%x_%H:%M:%S:%N)" >> dist/manifest.appcache
+	# run webpack
+	npx webpack --env APPLICATION=true
+	printf `date +%y%m%d`.`git rev-parse --short HEAD` > dist/version
