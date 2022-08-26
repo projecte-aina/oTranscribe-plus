@@ -24,6 +24,8 @@ compile_static:
 	mkdir dist/privacy
 	mv dist/privacy.htm dist/privacy/index.html
 
+ORAN = \033[0;33m
+NC = \033[0m
 build_prod:
 	$(MAKE) compile_static
 
@@ -34,4 +36,8 @@ build_prod:
 	# run webpack
 	npx webpack
 
-	npx sscli -b https://$(BASEURL) -r dist/ -f xml -o > dist/sitemap.xml
+    ifdef $(BASEURL)
+    npx sscli -b https://$(BASEURL) -r dist/ -f xml -o > dist/sitemap.xml
+    else
+	echo "${ORAN}BASEURL not defined, sitemap.xml file was not generated${NC}"
+    endif

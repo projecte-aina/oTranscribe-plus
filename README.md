@@ -45,7 +45,8 @@ The `src` folder in this repository only includes the "raw" JavaScript and CSS. 
 
 - Install [Node.js and NPM](https://nodejs.org).
 - Run `npm install` to install dependencies.
-- Run `make build_prod BASEURL=test.com` to compile the `dist` folder. This also generates the `sitemap.xml` file setting the `BASEURL` value as the site root path. You can set it like `test.com` or like `test.com/path`.
+- Run `make build_prod` to compile the `dist` folder.
+- Run `make build_prod BASEURL=test.com` to compile the `dist` folder also generating the `sitemap.xml` file. With the `BASEURL` value you set it as the site root path. You can set it like `test.com` or like `test.com/path`.
 
 ### Usage and compilation (Extended version)
 
