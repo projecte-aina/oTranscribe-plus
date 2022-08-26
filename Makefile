@@ -35,6 +35,7 @@ build_prod:
 	
 	# run webpack
 	npx webpack
+	printf `date +%y%m%d`.`git rev-parse --short HEAD` > dist/version
 
     ifdef $(BASEURL)
     npx sscli -b https://$(BASEURL) -r dist/ -f xml -o > dist/sitemap.xml
