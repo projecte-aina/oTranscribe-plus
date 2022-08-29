@@ -18,6 +18,9 @@
     <% if (!APPLICATION) { %>
     <script src="./jakecache.js" type="text/javascript" charset="utf-8"></script>
     <% } %>
+    <script>
+        var modelsPrefix = "<%= MODELSPREFIX %>";
+    </script>
 
     <%= require('html-loader!./html/topbar.htm').default %>
 

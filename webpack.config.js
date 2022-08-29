@@ -93,7 +93,8 @@ module.exports = (env) => {
         template: './src/index.htm'
       }),
       new webpack.DefinePlugin({
-        APPLICATION: env.APPLICATION
+        APPLICATION: env.APPLICATION,
+        MODELSPREFIX: JSON.stringify(env.MODELSPREFIX)
       })
     ]
   }

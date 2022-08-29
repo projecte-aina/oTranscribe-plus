@@ -1,4 +1,5 @@
 ORAN = \033[0;33m
+RED = \033[0;31m
 NC = \033[0m
 
 compile_static:
@@ -33,7 +34,7 @@ build_prod:
 	npx webpack
 	printf `date +%y%m%d`.`git rev-parse --short HEAD` > dist/version
 
-    ifdef $(BASEURL)
+    ifdef BASEURL
     npx sscli -b https://$(BASEURL) -r dist/ -f xml -o > dist/sitemap.xml
     else
 	echo "${ORAN}BASEURL not defined, sitemap.xml file was not generated${NC}"
@@ -46,6 +47,13 @@ build_app:
 	# manifest
 	cp src/manifest-dev.appcache dist/manifest.appcache
 	echo "# Updated $(shell date +%x_%H:%M:%S:%N)" >> dist/manifest.appcache
+
 	# run webpack
-	npx webpack --env APPLICATION=true
+    ifdef MODELSPREFIX
+	npx webpack --env APPLICATION=true --env MODELSPREFIX=$(MODELSPREFIX)
 	printf `date +%y%m%d`.`git rev-parse --short HEAD` > dist/version
+	rm -Rf dist/models
+    else
+	echo "${RED}You need to specify MODELSPREFIX, example: make build_app MODELSPREFIX=https://otranscribe.bsc.es${NC}"
+    endif
+	
