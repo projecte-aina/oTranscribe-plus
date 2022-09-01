@@ -7,7 +7,7 @@ export function cleanHTML(dirty) {
             'div': sanitizeHtml.simpleTransform('p'),
         },
         allowedAttributes: {
-            'span': [ 'class', 'data-timestamp', 'contentEditable' ]
+            'span': [ 'class', 'data-timestamp', 'data-meta', 'contentEditable', 'style', 'title' ]
         }
     });
 };

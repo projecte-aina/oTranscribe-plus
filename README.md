@@ -44,8 +44,10 @@ Please note that, in Chrome, local copies oTranscribe may not run correctly due 
 The `src` folder in this repository only includes the "raw" JavaScript and CSS. To compile the production-ready files:
 
 - Install [Node.js and NPM](https://nodejs.org).
-- Run `npm install` to install dependencies
-- Run `make build_prod` to compile the `dist` folder
+- Run `npm install` to install dependencies.
+- Run `make build_prod` to compile the `dist` folder.
+- Run `make build_prod BASEURL=test.com` to compile the `dist` folder also generating the `sitemap.xml` file. With the `BASEURL` value you set it as the site root path. You can set it like `test.com` or like `test.com/path`.
+- Run `make build_app` to compile the `dist` folder with the desktop application version.
 
 ### Usage and compilation (Extended version)
 
