@@ -35,7 +35,7 @@ build_prod:
 	printf `date +%y%m%d`.`git rev-parse --short HEAD` > dist/version
 
     ifdef BASEURL
-    npx sscli -b https://$(BASEURL) -r dist/ -f xml -o > dist/sitemap.xml
+	npx sscli -b https://$(BASEURL) -r dist/ -f xml -m '**/*.{html,htm}' -o > dist/sitemap.xml
     else
 	echo "${ORAN}BASEURL not defined, sitemap.xml file was not generated${NC}"
     endif
