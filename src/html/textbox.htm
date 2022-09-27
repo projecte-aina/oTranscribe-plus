@@ -77,10 +77,10 @@
 
                 timestamp = autoTimestamp(e["start"]);
                 if (timestamp !== null) {
-                    resultsContainer.insertAdjacentElement("beforeend", timestamp);
-                    const spaceSpan = document.createElement('span');
-                    spaceSpan.textContent = " ";                    
-                    resultsContainer.insertAdjacentElement("beforeend", spaceSpan);
+                    const newParagraph = document.createElement('p');
+                    newParagraph.append(document.createElement('br'));
+                    newParagraph.append(timestamp);
+                    resultsContainer.insertAdjacentElement("beforeend", newParagraph);
                 }
 
                 resultsContainer.insertAdjacentElement("beforeend", newSpan);
