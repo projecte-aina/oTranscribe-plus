@@ -32,6 +32,7 @@ export default function init(){
 
     window.formatMilliseconds = formatMilliseconds;
     window.createTimestampEl = createTimestampEl;
+    window.activateTimestamps = activateTimestamps;
     
     keyboardShortcutSetup();
 
