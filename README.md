@@ -47,6 +47,12 @@ The `src` folder in this repository only includes the "raw" JavaScript and CSS. 
 - Run `make build_prod BASEURL=test.com` to compile the `dist` folder also generating the `sitemap.xml` file. With the `BASEURL` value you set it as the site root path. You can set it like `test.com` or like `test.com/path`.
 - Run `make build_app` to compile the `dist` folder with the desktop application version.
 
+An example for building for the app:
+
+```
+make build_app MODELSPREFIX=https://otranscribe.bsc.es
+```
+
 ### Usage and compilation (Extended version)
 
 Code lives in `src` folder. There you will find the raw JavaScript and CSS files. Before you start expanding them you need to be using Node version 12 and have requirements already installed. Then, for compiling the code, obtaining a sourcemap, and 'watch-for-changes' (it will be kept running for development and watch real-time changes), run `make build_dev`.
