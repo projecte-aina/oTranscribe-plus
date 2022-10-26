@@ -17,8 +17,9 @@
         let source = null;
         var currentFile = null;
         let lastTimestampedMin = 0;
+        var audioContext = null;
 
-        function stop() {
+        async function stop() {
             console.log("stopping");
             lastTimestampedMin = 0;
             if (model !== null) {
@@ -29,10 +30,16 @@
                 recognizer.remove();
                 recognizer = null;
             }
+            /*
             if (source !== null) {
                 source.disconnect();
                 source = null;
             }
+            if (audioContext !== null) {
+                await audioContext.close();
+                audioContext = null;
+            }
+            */
         }
 
         function autoTimestamp(second) {
@@ -90,7 +97,7 @@
         }
 
         async function readFromMicro() {  
-            stop();
+            await stop();
 
             const partialContainer = document.getElementById('partial');         
             const modelName = document.getElementById("model").value;
@@ -122,12 +129,14 @@
                 },
             });
             
-            const audioContext = new AudioContext();
+            audioContext = (audioContext === null) ? new AudioContext() : audioContext;
             await audioContext.audioWorklet.addModule('recognizer-processor.js')
             const recognizerProcessor = new AudioWorkletNode(audioContext, 'recognizer-processor', { channelCount: 1, numberOfInputs: 1, numberOfOutputs: 1 });
             recognizerProcessor.port.postMessage({action: 'init', recognizerId: recognizer.id}, [ channel.port2 ])
             recognizerProcessor.connect(audioContext.destination);
             
+            if (source !== null) source.disconnect();
+
             source = audioContext.createMediaStreamSource(mediaStream);
             source.connect(recognizerProcessor);
         }
@@ -167,15 +176,15 @@
             const audioPlayer = audioRef; //.current;
             audioPlayer.src = fileUrl;
 
-            const audio = new Audio(fileUrl);
-            const ctx = new AudioContext();
-            const stream_dest = ctx.createMediaStreamDestination();
-            const source = ctx.createMediaElementSource(audioPlayer);
+            audioContext = (audioContext === null) ? new AudioContext() : audioContext;
+            const stream_dest = audioContext.createMediaStreamDestination();
+            if (source !== null) source.disconnect();
+            source = (source === null) ? audioContext.createMediaElementSource(audioPlayer) : source;
             
-            await ctx.audioWorklet.addModule('recognizer-processor.js')
-            const recognizerProcessor = new AudioWorkletNode(ctx, 'recognizer-processor', { channelCount: 1, numberOfInputs: 1, numberOfOutputs: 1 });
+            await audioContext.audioWorklet.addModule('recognizer-processor.js')
+            const recognizerProcessor = new AudioWorkletNode(audioContext, 'recognizer-processor', { channelCount: 1, numberOfInputs: 1, numberOfOutputs: 1 });
             recognizerProcessor.port.postMessage({action: 'init', recognizerId: recognizer.id}, [ channel.port2 ])
-            recognizerProcessor.connect(ctx.destination);
+            recognizerProcessor.connect(audioContext.destination);
 
             source.connect(recognizerProcessor);
 
