@@ -16,6 +16,7 @@ import { initBackup } from './backup';
 import { exportSetup } from './export';
 import importSetup from './import';
 import viewController from './view-controller';
+import { createSilentAudio } from './silent-audio';
 
 export default function init(){
     initBackup();
@@ -33,6 +34,7 @@ export default function init(){
     window.formatMilliseconds = formatMilliseconds;
     window.createTimestampEl = createTimestampEl;
     window.activateTimestamps = activateTimestamps;
+    window.createSilentAudio = createSilentAudio;
     
     keyboardShortcutSetup();
 

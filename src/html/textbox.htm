@@ -170,17 +170,7 @@
             recognizer.on("result", onResult);
             recognizer.on("partialresult", onPartialResult);
 
-            // This is a patch for Chrome, as it keeps 
-            audioRef.addEventListener("ended", function() 
-            {
-                setTimeout(function() {
-                    stop();
-                }, 1000);
-            }, { once: true });
-
-
             // const [audioSource, setAudioSource] = useState<MediaElementAudioSourceNode>();
-            
             const fileUrl = URL.createObjectURL(file);
             const audioPlayer = audioRef; //.current;
             audioPlayer.src = fileUrl;
@@ -196,6 +186,18 @@
             recognizerProcessor.connect(audioContext.destination);
 
             source.connect(recognizerProcessor);
+
+            audioRef.addEventListener("ended", function() 
+            {
+                // This dynamically generates a silent sound and appends it at the end of the playing. With this we avoid
+                // to abruptly stop the recognition, which was a bug on firefox. When it finishes we stop the recognition
+                // process, which keeping it alive was a bug on Chrome.
+                audioPlayer.src = createSilentAudio(1, 44100);
+                audioPlayer.play();
+                audioPlayer.addEventListener("ended", function() {
+                    model.terminate();
+                }, {once: true});
+            }, { once: true });
         }
     </script>
 
@@ -227,6 +229,7 @@
             </p>
             <p style="text-align: center; margin: 0 2rem;">
                 <audio id="audio-ref" autoplay></audio>
+                <audio id="audio-empty" autoplay></audio>
                 <button id="buttonReadFromFile" class="alt-input-button" onclick="readFromFile()">Write from micro</button>
             </p>
             <script>
