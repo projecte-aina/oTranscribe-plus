@@ -59,6 +59,7 @@
             const partialContainer = document.getElementById('partial');
             const partial = message.result.partial;
             partialContainer.textContent = partial;
+            // console.log("Partial result:", partial);
         }
 
         function onResult(message) {
@@ -72,7 +73,7 @@
             if (result.text === "") {
                 return;
             }
-            console.log("Result:", message);
+            // console.log("Result:", message.result);
             result.result.forEach( (e) => {
                 var idx = (14 - Math.round(e.conf * 14)) + 2;
                 var chr = grayValues[idx];
@@ -169,6 +170,14 @@
             recognizer.on("result", onResult);
             recognizer.on("partialresult", onPartialResult);
 
+            // This is a patch for Chrome, as it keeps 
+            audioRef.addEventListener("ended", function() 
+            {
+                setTimeout(function() {
+                    stop();
+                }, 1000);
+            }, { once: true });
+
 
             // const [audioSource, setAudioSource] = useState<MediaElementAudioSourceNode>();
             
@@ -187,7 +196,6 @@
             recognizerProcessor.connect(audioContext.destination);
 
             source.connect(recognizerProcessor);
-
         }
     </script>
 
