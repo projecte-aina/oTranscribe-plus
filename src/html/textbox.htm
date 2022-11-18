@@ -19,7 +19,7 @@
 
         (function () {
             let isVisible = localStorage.getItem('oTranscribe-visible-tips');
-            isVisible = (isVisible === null) ? true : isVisible;
+            isVisible = (isVisible === null) ? true : false; // it's an string
             if (!isVisible) closeTips();
         })();
     </script>
