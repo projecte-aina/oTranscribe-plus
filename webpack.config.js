@@ -12,7 +12,7 @@ module.exports = (env) => {
     },
     output: { // Transpiled and bundled output gets put in `build/bundle.js`.
       path: path.resolve(__dirname, 'dist'),
-      filename: 'bundle.js'   // Really, you want to upload index.htm and assets/bundle.js
+      filename: 'bundle.[fullhash].js'   // Really, you want to upload index.htm and assets/bundle.js
     },
     module: {
       rules: [
