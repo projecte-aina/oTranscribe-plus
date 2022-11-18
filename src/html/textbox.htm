@@ -1,4 +1,29 @@
 <div class="textbox-container">
+    <div id="tips">
+        <div class="content">
+        <div class="close-message-panel"><span onclick="closeTips();"><i class="fa fa-times"></i></span></div>
+        <div class="text">
+        <p data-l10n-id="d-txt1">Enter your transcript here...</p>
+        <p data-l10n-id="d-txt2">Protips:</p>
+        <p data-l10n-id="d-txt3">- <em>Ctrl+I</em> adds <em>italic</em> formatting and <b>Ctrl+B</b> adds <b>bold</b> formatting.</p>
+        <p data-l10n-id="d-txt4">- Press ESC to play/pause, and Ctrl+J to insert the current timestamp.<p>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        function closeTips () {
+            document.getElementById("tips").style.display = "none";
+            localStorage.setItem('oTranscribe-visible-tips', false);
+        }
+
+        (function () {
+            let isVisible = localStorage.getItem('oTranscribe-visible-tips');
+            isVisible = (isVisible === null) ? true : isVisible;
+            if (!isVisible) closeTips();
+        })();
+    </script>
+
     <div class="input active">
         <div class="file-input-outer"></div>    
         <div id="lastfile"></div>
@@ -200,8 +225,6 @@
             }, { once: true });
         }
     </script>
-
-
     <div style="display: flex; justify-content:center; margin:auto; margin-bottom: 20px; width: 20%;">
         <div style="display: inline;">
         <select name="model" id="model" style="width: 100%;">
@@ -246,13 +269,7 @@
     </div>
     
     <div id="textbox"  class="mousetrap" contenteditable="true">
-        <p data-l10n-id="d-txt1">Enter your transcript here...</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p data-l10n-id="d-txt2">Protips:</p>
-        <p>&nbsp;</p>
-        <p data-l10n-id="d-txt3">- <em>Ctrl+I</em> adds <em>italic</em> formatting and <b>Ctrl+B</b> adds <b>bold</b> formatting.</p>
-        <p data-l10n-id="d-txt4">- Press ESC to play/pause, and Ctrl+J to insert the current timestamp.<p>
+        
     </div>
     
     <div class="text-panel">
