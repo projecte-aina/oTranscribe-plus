@@ -55,3 +55,55 @@
     width: 100%;
 }
 
+#partial-container {
+    display: flex; 
+    justify-content: center;
+    white-space: nowrap;
+}
+
+#partial {
+    width: 25%;
+    min-width: 350px;
+    color: #4C6777;
+    display: inline-block;
+    overflow-x: hidden;
+    height: 1rem;
+    direction: rtl;
+    text-align: center;
+}
+
+#tips {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+
+    div.content {
+        max-width: 400px;
+        border: 2px solid #BBB;
+        display: inline-block;
+        border-radius: 4px;
+        padding-top: .25rem;
+        padding-right: .25rem;
+    }
+
+    div.button {
+        padding: .25rem;
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            cursor: pointer;
+        }
+    }
+
+    div.text {
+        padding: 1rem;
+        line-height: 1.5rem;
+        color: darken(#BBB, 20%);
+
+        &:hover {
+            color: black;
+        }
+    }
+}
+

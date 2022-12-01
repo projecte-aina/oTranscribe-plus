@@ -1,3 +1,5 @@
+import localStorageManager from 'local-storage-manager';
+
 const $ = require('jquery');
 
 export function inputSetup(opts) {
@@ -281,3 +283,5 @@ var localStorageManager = {
 window.localStorageManager = localStorageManager;
 
 }());
+
+export { localStorageManager as localStorage };

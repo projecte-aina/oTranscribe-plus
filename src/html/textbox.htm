@@ -1,4 +1,29 @@
 <div class="textbox-container">
+    <div id="tips">
+        <div class="content">
+        <div class="close-message-panel"><span onclick="closeTips();"><i class="fa fa-times"></i></span></div>
+        <div class="text">
+        <p data-l10n-id="d-txt1">Enter your transcript here...</p>
+        <p data-l10n-id="d-txt2">Protips:</p>
+        <p data-l10n-id="d-txt3">- <em>Ctrl+I</em> adds <em>italic</em> formatting and <b>Ctrl+B</b> adds <b>bold</b> formatting.</p>
+        <p data-l10n-id="d-txt4">- Press ESC to play/pause, and Ctrl+J to insert the current timestamp.<p>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        function closeTips () {
+            document.getElementById("tips").style.display = "none";
+            localStorage.setItem('oTranscribe-visible-tips', 1);
+        }
+
+        (function () {
+            let isVisible = localStorage.getItem('oTranscribe-visible-tips');
+            isVisible = (isVisible === null) ? true : false; // it's an string
+            if (!isVisible) closeTips();
+        })();
+    </script>
+
     <div class="input active">
         <div class="file-input-outer"></div>    
         <div id="lastfile"></div>
@@ -17,8 +42,9 @@
         let source = null;
         var currentFile = null;
         let lastTimestampedMin = 0;
+        var audioContext = null;
 
-        function stop() {
+        async function stop() {
             console.log("stopping");
             lastTimestampedMin = 0;
             if (model !== null) {
@@ -29,10 +55,16 @@
                 recognizer.remove();
                 recognizer = null;
             }
+            /*
             if (source !== null) {
                 source.disconnect();
                 source = null;
             }
+            if (audioContext !== null) {
+                await audioContext.close();
+                audioContext = null;
+            }
+            */
         }
 
         function autoTimestamp(second) {
@@ -52,6 +84,7 @@
             const partialContainer = document.getElementById('partial');
             const partial = message.result.partial;
             partialContainer.textContent = partial;
+            // console.log("Partial result:", partial);
         }
 
         function onResult(message) {
@@ -65,7 +98,7 @@
             if (result.text === "") {
                 return;
             }
-            console.log("Result:", message);
+            // console.log("Result:", message.result);
             result.result.forEach( (e) => {
                 var idx = (14 - Math.round(e.conf * 14)) + 2;
                 var chr = grayValues[idx];
@@ -90,7 +123,7 @@
         }
 
         async function readFromMicro() {  
-            stop();
+            await stop();
 
             const partialContainer = document.getElementById('partial');         
             const modelName = document.getElementById("model").value;
@@ -122,12 +155,14 @@
                 },
             });
             
-            const audioContext = new AudioContext();
+            audioContext = (audioContext === null) ? new AudioContext() : audioContext;
             await audioContext.audioWorklet.addModule('recognizer-processor.js')
             const recognizerProcessor = new AudioWorkletNode(audioContext, 'recognizer-processor', { channelCount: 1, numberOfInputs: 1, numberOfOutputs: 1 });
             recognizerProcessor.port.postMessage({action: 'init', recognizerId: recognizer.id}, [ channel.port2 ])
             recognizerProcessor.connect(audioContext.destination);
             
+            if (source !== null) source.disconnect();
+
             source = audioContext.createMediaStreamSource(mediaStream);
             source.connect(recognizerProcessor);
         }
@@ -160,29 +195,36 @@
             recognizer.on("result", onResult);
             recognizer.on("partialresult", onPartialResult);
 
-
             // const [audioSource, setAudioSource] = useState<MediaElementAudioSourceNode>();
-            
             const fileUrl = URL.createObjectURL(file);
             const audioPlayer = audioRef; //.current;
             audioPlayer.src = fileUrl;
 
-            const audio = new Audio(fileUrl);
-            const ctx = new AudioContext();
-            const stream_dest = ctx.createMediaStreamDestination();
-            const source = ctx.createMediaElementSource(audioPlayer);
+            audioContext = (audioContext === null) ? new AudioContext() : audioContext;
+            const stream_dest = audioContext.createMediaStreamDestination();
+            if (source !== null) source.disconnect();
+            source = (source === null) ? audioContext.createMediaElementSource(audioPlayer) : source;
             
-            await ctx.audioWorklet.addModule('recognizer-processor.js')
-            const recognizerProcessor = new AudioWorkletNode(ctx, 'recognizer-processor', { channelCount: 1, numberOfInputs: 1, numberOfOutputs: 1 });
+            await audioContext.audioWorklet.addModule('recognizer-processor.js')
+            const recognizerProcessor = new AudioWorkletNode(audioContext, 'recognizer-processor', { channelCount: 1, numberOfInputs: 1, numberOfOutputs: 1 });
             recognizerProcessor.port.postMessage({action: 'init', recognizerId: recognizer.id}, [ channel.port2 ])
-            recognizerProcessor.connect(ctx.destination);
+            recognizerProcessor.connect(audioContext.destination);
 
             source.connect(recognizerProcessor);
 
+            audioRef.addEventListener("ended", function() 
+            {
+                // This dynamically generates a silent sound and appends it at the end of the playing. With this we avoid
+                // to abruptly stop the recognition, which was a bug on firefox. When it finishes we stop the recognition
+                // process, which keeping it alive was a bug on Chrome.
+                audioPlayer.src = createSilentAudio(1, 44100);
+                audioPlayer.play();
+                audioPlayer.addEventListener("ended", function() {
+                    model.terminate();
+                }, {once: true});
+            }, { once: true });
         }
     </script>
-
-
     <div style="display: flex; justify-content:center; margin:auto; margin-bottom: 20px; width: 20%;">
         <div style="display: inline;">
         <select name="model" id="model" style="width: 100%;">
@@ -222,19 +264,12 @@
         </div>  
     </div>
 
-    <div style="display: block;">
-        <p id="partial" style="text-align: center; color: #4C6777;">
-        </p>
+    <div id="partial-container">
+        <p id="partial"></p>
     </div>
     
     <div id="textbox"  class="mousetrap" contenteditable="true">
-        <p data-l10n-id="d-txt1">Enter your transcript here...</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p data-l10n-id="d-txt2">Protips:</p>
-        <p>&nbsp;</p>
-        <p data-l10n-id="d-txt3">- <em>Ctrl+I</em> adds <em>italic</em> formatting and <b>Ctrl+B</b> adds <b>bold</b> formatting.</p>
-        <p data-l10n-id="d-txt4">- Press ESC to play/pause, and Ctrl+J to insert the current timestamp.<p>
+        
     </div>
     
     <div class="text-panel">

@@ -6,7 +6,7 @@ const $ = require('jquery');
 let otrQueryParams = {};
 
 import { watchFormatting, watchWordCount, initAutoscroll } from './texteditor';
-import { inputSetup, getQueryParams, hide as inputHide } from './input';
+import { inputSetup, getQueryParams, hide as inputHide, localStorage } from './input';
 import oldBrowserCheck from './old-browsers';
 import languageSetup from './languages';
 import { createPlayer, playerDrivers, getPlayer, isVideoFormat } from './player/player';
@@ -16,6 +16,7 @@ import { initBackup } from './backup';
 import { exportSetup } from './export';
 import importSetup from './import';
 import viewController from './view-controller';
+import { createSilentAudio } from './silent-audio';
 
 export default function init(){
     initBackup();
@@ -33,6 +34,8 @@ export default function init(){
     window.formatMilliseconds = formatMilliseconds;
     window.createTimestampEl = createTimestampEl;
     window.activateTimestamps = activateTimestamps;
+    window.createSilentAudio = createSilentAudio;
+    window.localStorageManager = localStorage;
     
     keyboardShortcutSetup();
 

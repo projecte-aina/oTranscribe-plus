@@ -1,12 +1,12 @@
-## oTranscribe
+## oTranscribe+
 
-**[oTranscribe](http://oTranscribe.com/)** is a free web app designed to take the pain out of transcribing recorded interviews.
+**oTranscribe+** is a free web app designed to take the pain out of transcribing recorded interviews through the use of browser based automated speech recognition. It is based on **[oTranscribe](http://oTranscribe.com/)** and **[vosk-browser](https://github.com/ccoreilly/vosk-browser)**
 
+- Get the initial transcription of your audio content with speech recognition that runs in your browser; free and private
 - Pause (ESC), rewind (F1) and fast-forward (F2) without taking your hands off the keyboard
 - Adjust playback speed with a slider or using F3/F4
 - Your transcript is automatically saved to the browser's `localStorage` every second
 - Rich text support using `contentEditable`
-- YouTube and video file support
 
 ... and more!
 
@@ -16,16 +16,14 @@ However, there is a barrier of entry to the adoption of these tools, mostly due 
 
 With this platform/tool, language workers can upload a file to the web application and receive a basic transcription. Since ASR decoding is done on client-side, the provider can serve multiple users without the concern on costs per user computationally; since the server side processes will be limited.
 
-oTranscribe+ is an **[oTranscribe](http://oTranscribe.com/)** fork that adds [Vosk-Browser](https://github.com/ccoreilly/vosk-browser) functionality.
-
 ## Extended version
 
 ### Requirements
 
-This project requires Node version 12. We recommend to use the [Node Version Manager](https://github.com/nvm-sh/nvm) tool, as well as the [Yarn](https://yarnpkg.com/) package manager. With them you can locally use that Node version 12 and install requirements:
+This project currently works with Node version 18 (LTS as of written date). However we recommend to use the [Node Version Manager](https://github.com/nvm-sh/nvm) tool, as well as the [Yarn](https://yarnpkg.com/) package manager. With them you can locally use that Node version 18 and install requirements:
 
 ```
-nvm use 12
+nvm use 18
 yarn install
 ```
 
@@ -48,6 +46,12 @@ The `src` folder in this repository only includes the "raw" JavaScript and CSS. 
 - Run `make build_prod` to compile the `dist` folder.
 - Run `make build_prod BASEURL=test.com` to compile the `dist` folder also generating the `sitemap.xml` file. With the `BASEURL` value you set it as the site root path. You can set it like `test.com` or like `test.com/path`.
 - Run `make build_app` to compile the `dist` folder with the desktop application version.
+
+An example for building for the app:
+
+```
+make build_app MODELSPREFIX=https://otranscribe.bsc.es
+```
 
 ### Usage and compilation (Extended version)
 
