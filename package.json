@@ -27,7 +27,7 @@
     "karma-webpack": "^5.0.0",
     "mini-css-extract-plugin": "^2.6.1",
     "mocha": "^10.0.0",
-    "node-sass": "^7.0.1",
+    "node-sass": "^8.0.0",
     "postcss": "^8.4.16",
     "postcss-loader": "^7.0.1",
     "raw-loader": "^4.0.2",
@@ -38,6 +38,7 @@
     "webpack-dev-server": "^4.9.3"
   },
   "dependencies": {
+    "@npmcli/fs": "^3.1.0",
     "jakecache": "git+https://github.com/kenchris/jakecache.git",
     "jquery": "^3.6.0",
     "keycode": "^2.2.1",
