@@ -13,6 +13,9 @@ compile_static:
 	# copy over static assets
 	cp ./node_modules/jakecache/dist/jakecache.js ./node_modules/jakecache/dist/jakecache-sw.js dist/
 
+	# copy favicon
+	cp ./src/favicon.ico dist/
+
 build_dev:
 	$(MAKE) compile_static
 

@@ -133,6 +133,17 @@ function onLocalized() {
     
     oldBrowserCheck();
     // oT.input.loadPreviousFileDetails();
+
+    // FIXME: This is a patch. This is not finished. Just a trick to hide the YouTube button. Due to how difficult is to change
+    // the oTinput module code in input.js and the fast requirement of removing that button I did this temporary patch. It's not 
+    // a finished work at all and it's quite dirty and sloppy, but does the trick.
+    let buttons = Array.from(document.getElementsByClassName("alt-input-button"));
+    if (buttons.length == 3) {
+        let button = buttons[0];
+        if (button.textContent.toLowerCase().includes("youtube")) {
+            button.style.display = "none";
+        }
+    }
 }
 
 window.addEventListener('localized', onLocalized, false);
