@@ -107,6 +107,12 @@ Translations have been provided by the following talented and generous volunteer
 
 More about translating oTranscribe [here](https://github.com/oTranscribe/oTranscribe/wiki/Help-translate-oTranscribe).
 
+## Authors and acknowledgment
+Developed by [Jamgo SCCL](https://jamgo.coop/) for the Text Mining Unit in Barcelona Supercomputing Center.
+
+## License
+Mozilla Public License 2.0
+
 # Funding
 
 This work is funded by the [Generalitat de
