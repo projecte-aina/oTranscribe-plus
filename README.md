@@ -20,10 +20,10 @@ With this platform/tool, language workers can upload a file to the web applicati
 
 ### Requirements
 
-This project currently works with Node version 18 (LTS as of written date). However we recommend to use the [Node Version Manager](https://github.com/nvm-sh/nvm) tool, as well as the [Yarn](https://yarnpkg.com/) package manager. With them you can locally use that Node version 18 and install requirements:
+This project currently works with Node version 19 (LTS as of written date). However we recommend to use the [Node Version Manager](https://github.com/nvm-sh/nvm) tool, as well as the [Yarn](https://yarnpkg.com/) package manager. With them you can locally use that Node version 19 and install requirements:
 
 ```
-nvm use 18
+nvm use 19
 yarn install
 ```
 
@@ -106,3 +106,12 @@ Translations have been provided by the following talented and generous volunteer
 *   Greek: [Konstantinos Alexiou](http://konalexiou.net)
 
 More about translating oTranscribe [here](https://github.com/oTranscribe/oTranscribe/wiki/Help-translate-oTranscribe).
+
+# Funding
+
+This work is funded by the [Generalitat de
+Catalunya](https://politiquesdigitals.gencat.cat/ca/inici/index.html#googtrans(ca|en))
+within the framework of [Projecte AINA](https://politiquesdigitals.gencat.cat/ca/economia/catalonia-ai/aina).
+
+<a target="_blank" title="Generalitat de Catalunya" href="https://politiquesdigitals.gencat.cat/ca/economia/catalonia-ai/aina/"><img alt="Generalitat logo" src="https://bot.aina.bsc.es/logos/gene.png" width="400"></a>
+
