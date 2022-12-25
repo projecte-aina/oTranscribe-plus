@@ -31,7 +31,7 @@
     "postcss": "^8.4.16",
     "postcss-loader": "^7.0.1",
     "raw-loader": "^4.0.2",
-    "sass-loader": "^13.0.2",
+    "sass-loader": "^13.2.0",
     "static-sitemap-cli": "^2.1.2",
     "webpack": "^5.73.0",
     "webpack-cli": "^4.10.0",
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@npmcli/fs": "^3.1.0",
-    "jakecache": "git+https://github.com/kenchris/jakecache.git",
+    "jakecache": "1.1.1",
     "jquery": "^3.6.0",
     "keycode": "^2.2.1",
     "local-storage-manager": "git+https://github.com/ejb/localStorageManager.git",
@@ -50,7 +50,7 @@
     "progressor.js": "git+https://github.com/ejb/progressor.js.git",
     "sanitize-html": "^2.7.1",
     "to-markdown": "^3.1.1",
-    "vosk-browser": "^0.0.7",
+    "vosk-browser": "^0.0.8",
     "webl10n": "^1.0.0"
   }
 }

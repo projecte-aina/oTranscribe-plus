@@ -220,6 +220,7 @@
                 audioPlayer.src = createSilentAudio(1, 44100);
                 audioPlayer.play();
                 audioPlayer.addEventListener("ended", function() {
+                    recognizer.retrieveFinalResult();
                     model.terminate();
                 }, {once: true});
             }, { once: true });
