@@ -78,6 +78,17 @@ Then run a server at the root directory of this repository at `http://localhost:
 
     casperjs test tests/
 
+## Running with docker
+
+To run oTranscribe+ with docker, you will have to build then run the image:
+
+```
+docker build -t otranscribeplus:latest "."
+docker run --rm -d -p 80:80/tcp otranscribeplus
+```
+
+The application will be available at: http://localhost.
+
 ### Translations
 
 Translations have been provided by the following talented and generous volunteers:
