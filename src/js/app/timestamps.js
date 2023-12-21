@@ -43,8 +43,8 @@ function insertHTML(newElement) {
 }
 
 
-function insertTimestamp(){
-    var time = getTime();
+function insertTimestamp(givenTime){
+    var time = givenTime || getTime();
     if (time) {
         const space = document.createTextNode("\u00A0");
         insertHTML(createTimestampEl(time));
@@ -105,4 +105,4 @@ function convertTimestampToSeconds(hms) {
     return (+a[0]) * 60 + (+a[1]);
 }
 
-export {activateTimestamps, insertTimestamp, convertTimestampToSeconds, formatMilliseconds};
+export {activateTimestamps, insertTimestamp, convertTimestampToSeconds, formatMilliseconds, createTimestampEl};

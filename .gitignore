@@ -4,3 +4,5 @@ publish.sh
 todo.md
 bower_components/
 .DS_Store
+*.log
+log.txt

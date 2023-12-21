@@ -6,16 +6,17 @@ const $ = require('jquery');
 let otrQueryParams = {};
 
 import { watchFormatting, watchWordCount, initAutoscroll } from './texteditor';
-import { inputSetup, getQueryParams, hide as inputHide } from './input';
+import { inputSetup, getQueryParams, hide as inputHide, localStorage } from './input';
 import oldBrowserCheck from './old-browsers';
 import languageSetup from './languages';
 import { createPlayer, playerDrivers, getPlayer, isVideoFormat } from './player/player';
 import { bindPlayerToUI, keyboardShortcutSetup } from './ui';
-import { activateTimestamps, insertTimestamp, convertTimestampToSeconds } from './timestamps';
+import { activateTimestamps, insertTimestamp, convertTimestampToSeconds, formatMilliseconds, createTimestampEl } from './timestamps';
 import { initBackup } from './backup';
 import { exportSetup } from './export';
 import importSetup from './import';
 import viewController from './view-controller';
+import { createSilentAudio } from './silent-audio';
 
 export default function init(){
     initBackup();
@@ -29,6 +30,12 @@ export default function init(){
     // this is necessary due to execCommand restrictions
     // see: http://stackoverflow.com/a/33321235
     window.insertTimestamp = insertTimestamp;
+
+    window.formatMilliseconds = formatMilliseconds;
+    window.createTimestampEl = createTimestampEl;
+    window.activateTimestamps = activateTimestamps;
+    window.createSilentAudio = createSilentAudio;
+    window.localStorageManager = localStorage;
     
     keyboardShortcutSetup();
 
